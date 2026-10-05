@@ -1,0 +1,423 @@
+/* =========================================================
+   PORTFOLIO – style.css
+   Pendekatan mobile-first: gaya dasar untuk HP,
+   lalu diperlebar lewat @media (min-width: ...)
+   ========================================================= */
+
+/* ---------- 1. Warna & ukuran (ubah di sini untuk ganti tema) ---------- */
+:root {
+  --bg:        #eef2f6;   /* latar utama */
+  --bg-tint:   #dfe7f0;   /* latar section proyek */
+  --ink:       #14213d;   /* teks utama */
+  --ink-soft:  #4a5670;   /* teks pendukung */
+  --accent:    #2447f5;   /* biru kobalt: tombol, link */
+  --accent-dk: #1a34c2;
+  --sun:       #ffb703;   /* kuning: dipakai hemat */
+  --white:     #ffffff;
+
+  --font-head: "Bricolage Grotesque", "Trebuchet MS", Arial, sans-serif;
+  --font-body: "DM Sans", "Segoe UI", Arial, sans-serif;
+
+  --radius: 14px;
+  --gutter: 1.25rem;
+  --header-h: 64px;
+}
+
+/* ---------- 2. Reset sederhana ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 12px);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+ul  { list-style: none; margin: 0; padding: 0; }
+a   { color: inherit; }
+
+h1, h2, h3 {
+  font-family: var(--font-head);
+  line-height: 1.12;
+  margin: 0 0 0.6em;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(2.25rem, 7vw, 4.25rem); font-weight: 800; }
+h2 { font-size: clamp(1.75rem, 4.5vw, 2.5rem); font-weight: 700; }
+h3 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.01em; }
+
+p { margin: 0 0 1em; }
+
+.container {
+  width: 100%;
+  max-width: 1080px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.lead {
+  font-size: 1.15rem;
+  color: var(--ink-soft);
+  max-width: 34rem;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  background: var(--ink);
+  color: var(--white);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  z-index: 200;
+}
+.skip-link:focus { top: 0.75rem; }
+
+/* ---------- 3. Header & navigasi ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-h);
+  background: rgba(238, 242, 246, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(20, 33, 61, 0.1);
+}
+
+.header-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 1.25rem;
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+/* Tombol hamburger (mobile) */
+.menu-toggle { position: absolute; opacity: 0; pointer-events: none; }
+
+.menu-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  cursor: pointer;
+}
+.menu-button span {
+  display: block;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+}
+
+/* Menu mobile: turun dari header */
+.nav {
+  position: absolute;
+  top: var(--header-h);
+  left: 0;
+  right: 0;
+  background: var(--bg);
+  border-bottom: 1px solid rgba(20, 33, 61, 0.1);
+  padding: 0.5rem var(--gutter) 1.25rem;
+  display: none;
+}
+.nav ul { display: flex; flex-direction: column; gap: 0.25rem; }
+.nav a {
+  display: block;
+  padding: 0.75rem 0;
+  text-decoration: none;
+  font-weight: 500;
+}
+.nav a:hover { color: var(--accent); }
+
+.nav .nav-cta {
+  margin-top: 0.5rem;
+  text-align: center;
+  background: var(--accent);
+  color: var(--white);
+  border-radius: 999px;
+  padding: 0.75rem 1.25rem;
+}
+.nav .nav-cta:hover { background: var(--accent-dk); color: var(--white); }
+
+/* Saat checkbox dicentang: menu tampil & hamburger jadi tanda X */
+.menu-toggle:checked ~ .nav { display: block; }
+.menu-toggle:checked ~ .menu-button span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.menu-toggle:checked ~ .menu-button span:nth-child(2) { opacity: 0; }
+.menu-toggle:checked ~ .menu-button span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.menu-toggle:focus-visible ~ .menu-button { outline: 3px solid var(--accent); border-radius: 8px; }
+
+/* ---------- 4. Tombol ---------- */
+.btn {
+  display: inline-block;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 2px solid transparent;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn-primary { background: var(--accent); color: var(--white); }
+.btn-primary:hover { background: var(--accent-dk); }
+.btn-ghost { border-color: var(--ink); }
+.btn-ghost:hover { background: var(--ink); color: var(--white); }
+
+/* ---------- 5. Hero ---------- */
+.hero { padding: 3rem 0 4rem; }
+
+.hero-inner {
+  display: grid;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.hero-text h1 { max-width: 14ch; }
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+/* Blok foto: bentuk blob + bayangan kuning */
+.portrait {
+  width: min(78%, 320px);
+  aspect-ratio: 1;
+  background: var(--accent);
+  color: var(--white);
+  border-radius: 58% 42% 55% 45% / 48% 55% 45% 52%;
+  box-shadow: 14px 14px 0 var(--sun);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 4.5rem;
+  overflow: hidden;
+}
+.portrait img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- 6. Section umum ---------- */
+.section { padding: 4rem 0; }
+.section-tint { background: var(--bg-tint); }
+
+/* ---------- 7. Tentang ---------- */
+.about { display: grid; gap: 1rem; }
+.about-body { max-width: 38rem; color: var(--ink-soft); }
+
+/* ---------- 8. Proyek ---------- */
+.projects {
+  display: grid;
+  align-items: start;    /* tiap kartu memanjang sendiri, tidak menarik kartu lain */
+  gap: 1.75rem;
+  margin-top: 2rem;
+}
+
+.project {
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 0 rgba(20, 33, 61, 0.08);
+}
+
+.thumb {
+  aspect-ratio: 16 / 10;
+  width: 100%;
+}
+/* Pratinjau sementara berupa gradien. Ganti dengan <img> screenshot proyekmu. */
+.thumb-a { background: linear-gradient(135deg, #14213d 0%, #2447f5 100%); }
+.thumb-b { background: linear-gradient(135deg, #ffb703 0%, #fb8500 100%); }
+.thumb-c { background: linear-gradient(135deg, #2a9d8f 0%, #264653 100%); }
+
+.project-info { padding: 1.4rem 1.4rem 1.6rem; min-height: 15rem; } /* tinggi minimal agar kartu tertutup tampak sama */
+.project-info p { color: var(--ink-soft); }
+.project-info .tags {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 1.1rem;
+}
+
+.text-link {
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+}
+.text-link:hover { color: var(--accent-dk); }
+
+/* ---------- 9. Keahlian ---------- */
+.skills { margin: 2rem 0 0; display: grid; gap: 1.5rem; }
+
+.skill-group {
+  border-left: 4px solid var(--accent);
+  padding-left: 1.1rem;
+}
+.skill-group dt {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+.skill-group dd { margin: 0; color: var(--ink-soft); }
+
+/* ---------- 10. Kontak ---------- */
+.contact {
+  background: var(--ink);
+  color: var(--white);
+}
+.contact .lead { color: #c3cce0; }
+
+.email-big {
+  display: inline-block;
+  margin: 0.5rem 0 2rem;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 6vw, 2.75rem);
+  letter-spacing: -0.02em;
+  text-decoration: underline;
+  text-decoration-color: var(--sun);
+  text-decoration-thickness: 4px;
+  text-underline-offset: 8px;
+  overflow-wrap: anywhere;
+}
+.email-big:hover { color: var(--sun); }
+.contact :focus-visible { outline-color: var(--sun); }
+
+.social { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; }
+.social a { color: #c3cce0; text-underline-offset: 4px; }
+.social a:hover { color: var(--white); }
+
+/* ---------- 11. Footer ---------- */
+.site-footer {
+  background: var(--ink);
+  color: #9aa6c2;
+  padding: 1.5rem 0 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.9rem;
+}
+.site-footer p { margin: 0; }
+
+/* =========================================================
+   TABLET  (≥ 700px)
+   ========================================================= */
+@media (min-width: 700px) {
+  :root { --gutter: 2rem; }
+
+  .hero { padding: 5rem 0 6rem; }
+  .section { padding: 5.5rem 0; }
+
+  .skills { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+}
+
+/* =========================================================
+   DESKTOP  (≥ 960px)
+   ========================================================= */
+@media (min-width: 960px) {
+  /* Menu tampil sebaris, hamburger disembunyikan */
+  .menu-button { display: none; }
+
+  .nav {
+    position: static;
+    display: block;
+    background: none;
+    border: 0;
+    padding: 0;
+  }
+  .nav ul { flex-direction: row; align-items: center; gap: 2rem; }
+  .nav a { padding: 0.25rem 0; }
+  .nav .nav-cta { margin: 0; padding: 0.55rem 1.25rem; }
+
+  .hero-inner { grid-template-columns: 1.4fr 1fr; gap: 4rem; }
+  .portrait { justify-self: end; width: 100%; max-width: 380px; }
+
+  .about { grid-template-columns: 1fr 1.5fr; gap: 3rem; }
+
+  .projects { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+}
+
+/* ---------- Hormati pengguna yang mematikan animasi ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
+
+/* ---------- Detail pekerjaan (buka-tutup di halaman yang sama) ---------- */
+.detail summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.detail summary::-webkit-details-marker { display: none; }
+.detail summary:hover { color: var(--accent-dk); }
+
+/* Panah kecil di samping teks */
+.detail summary::after {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 0.2s;
+}
+.detail[open] summary::after { transform: rotate(-135deg) translateY(-2px); }
+
+/* Teks tombol berganti saat dibuka */
+.detail .when-open { display: none; }
+.detail[open] .when-open { display: inline; }
+.detail[open] .when-closed { display: none; }
+
+.detail-list {
+  margin: 1rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(20, 33, 61, 0.12);
+  display: grid;
+  gap: 0.75rem;
+}
+.detail-list dt {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.detail-list dd {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
